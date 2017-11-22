@@ -8,6 +8,8 @@ page = urllib2.urlopen(url)
 soup = BeautifulSoup(page, 'html.parser')
 messages = soup.find_all('div', attrs={'class': 'Message'})
 
+profiles = []
+
 for message in messages:
 	lines = str(message).splitlines()
 	profile = {}
@@ -174,8 +176,17 @@ for message in messages:
 			startIndex = line.find('</b>') + 4
 			endIndex = line.find('</div>', startIndex)
 			if endIndex != -1:
-				print line[startIndex: endIndex].strip()
 				profile['comments'] = line[startIndex: endIndex].strip()
-				
-	print json.dumps(profile)
+
+	profiles.append(profile)
+
+#use if just need valid JSON, save space
+# output = json.dumps(profiles)
+
+#prettifies JSON
+output = json.dumps(profiles, indent=4, sort_keys=True)
+
+f = open('profiles.txt', 'w')
+f.write(output)
+f.close()
 
