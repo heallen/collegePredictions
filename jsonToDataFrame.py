@@ -220,6 +220,9 @@ def main():
 	# states = pd.read_json(jsonFile)
 	# states = states.apply(lambda x: x.astype(str).str.lower())
 	# states.to_json(jsonFile)
-	return data
+
+	categories = ['act', 'gpa', 'ap', 'ib', 'sat1', 'sat2', 'income', 'rank', 'gender', 'ethnicity', 'decision']
+	final_data = data.filter(categories, axis=1)
+	final_data.to_csv('updatedProfiles.csv')
 
 main()
