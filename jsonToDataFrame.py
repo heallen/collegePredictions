@@ -222,7 +222,9 @@ def main():
 	# states.to_json(jsonFile)
 
 	categories = ['act', 'gpa', 'ap', 'ib', 'sat1', 'sat2', 'income', 'rank', 'gender', 'ethnicity', 'decision']
-	final_data = data.filter(categories, axis=1)
-	final_data.to_csv('updatedProfiles.csv')
+	updated_data = data.filter(categories, axis=1)
+	updated_data.to_csv('updatedProfiles.csv')
+
+	data.to_csv('full_updatedProfiles.csv', encoding='utf-8')
 
 main()
