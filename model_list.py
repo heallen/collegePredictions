@@ -17,11 +17,10 @@ from sklearn.svm import SVC
 
 '''Model functions must be manually added to L.'''
 
-model_list = [decision_tree, boosted_decision_tree, random_forest, mlp svm, svm_rbf]
 
 def decision_tree():
     clf = DecisionTreeClassifier()
-    params = {'max_depth':[3,5,10,15,None]}
+    params = {'max_depth':[2, 3,5,10,None]}
     return clf, params
 
 def boosted_decision_tree():
@@ -31,18 +30,18 @@ def boosted_decision_tree():
                              learning_rate = 2,
                              random_state = None)
     params = {'n_estimators':[25, 50],
-              'base_estimator__max_depth':[10, 25, None]}
+              'base_estimator__max_depth':[2, 3, 5, 10, None]}
     return clf, params
 
 def random_forest():
     clf = RandomForestClassifier()
-    params = {'n_estimators':[5,25,50], 'max_features':['sqrt', 'log2']}
+    params = {'n_estimators':[5,25,50, 100], 'max_features':['sqrt', 'log2']}
     return clf, params
 
 
 def mlp():
     clf = MLPClassifier() 
-    params = {'hidden_layer_sizes':[(100), (30,30,30), (100,100,100)]}
+    params = {'hidden_layer_sizes':[(100), (30,30,30),(30,100,30), (10,10,10,10,10),(100,100,100)]}
     # params = {}
     return clf, params
 
@@ -56,4 +55,5 @@ def svm_rbf():
     params = {}
     return clf, params
 
+model_list = [decision_tree, boosted_decision_tree, random_forest, mlp, svm, svm_rbf]
 
