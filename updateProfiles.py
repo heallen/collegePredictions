@@ -1,8 +1,6 @@
 import pandas as pd
 import re
 
-
-
 def readJson():
 	jsonFile = 'profiles.json'
 	data = pd.read_json(jsonFile)
@@ -224,6 +222,7 @@ def main():
 	categories = ['act', 'gpa', 'ap', 'ib', 'sat1', 'sat2', 'income', 'rank', 'gender', 'ethnicity', 'decision']
 	updated_data = data.filter(categories, axis=1)
 	updated_data.to_csv('updatedProfiles.csv')
+	updated_data.to_pickle('updatedProfiles.pkl')
 
 	data.to_csv('full_updatedProfiles.csv', encoding='utf-8')
 
