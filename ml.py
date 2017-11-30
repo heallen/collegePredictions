@@ -22,7 +22,7 @@ with open('updatedProfiles.pkl', 'rb') as fobj:
 cols_to_use = ['gpa', 'act', 'sat1', 'ap_count', 'ap_mean', 'sat2_count', 'sat2_mean']
 label_column = 'decision'
 
-features, labels = convert_to_features(df.copy(deep = True), cols_to_use, label_column)
+features, labels = convert_to_features(df, cols_to_use, label_column)
 
 
 ####  RUN MODELS #### NEEDS features and labels
