@@ -9,6 +9,7 @@ import pdb
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import confusion_matrix, precision_recall_fscore_support
 
+from features import convert_to_features
 
 data_desc = 'Harvard 2016 - 2021'
 date = "{:%B_%d_%Y_%I_%M_%p}".format(datetime.now(timezone('US/Eastern')))
@@ -18,75 +19,10 @@ with open('updatedProfiles.pkl', 'rb') as fobj:
     df = pickle.load(fobj)
 
 
-### get rid of columns without a decision
-df = df.dropna(subset=['decision'])
-
-### Replace Errors and Zeros of  ACT/GPA with mean ACT/GPA
-df['act'] = pd.to_numeric(df['act'], downcast = 'integer', errors = 'coerce')
-df['gpa'] = pd.to_numeric(df['gpa'], errors = 'coerce')
-df['sat1'] = pd.to_numeric(df['sat1'], downcast = 'integer', errors = 'coerce')
-
-df['act']= df['act'].where(df['act']!=0, np.nan) 
-df['gpa']= df['gpa'].where(df['gpa']!=0, np.nan) 
-df['sat1']= df['sat1'].where(df['sat1']!=0, np.nan) 
-
-mean_act = df['act'].mean(skipna=True)
-mean_gpa = df['gpa'].mean(skipna=True)
-mean_sat = df['sat1'].mean(skipna=True)
-
-df['act']=df['act'].fillna(value = mean_act)
-df['gpa']=df['gpa'].fillna(value = mean_gpa)
-df['sat1']=df['sat1'].fillna(value = mean_sat)
-
-
-### AP replace list of scores with number of tests and average test
-def ap_features(ap_score):
-    count = len(ap_score) if type(ap_score) is list else 0
-    avg = np.mean(ap_score) if type(ap_score) is list else np.nan
-    return pd.Series(data = {'ap_count': count, 'ap_mean': avg})
-
-df[['ap_count', 'ap_mean']] = df['ap'].apply(ap_features)
-mean_ap_score = df['ap_mean'].mean(skipna=True)
-df['ap_mean']=df['ap_mean'].fillna(value = mean_ap_score)
-
-
-### SAT2 replace list of scores with number of tests and average test
-def sat2_features(sat2_score):
-    count = len(sat2_score) if type(sat2_score) is list else 0
-    avg = np.mean(sat2_score) if type(sat2_score) is list else np.nan
-    return pd.Series(data = {'sat2_count': count, 'sat2_mean': avg})
-
-df[['sat2_count', 'sat2_mean']] = df['ap'].apply(sat2_features)
-mean_sat2_score = df['sat2_mean'].mean(skipna=True)
-df['sat2_mean']=df['sat2_mean'].fillna(value = mean_sat2_score)
-
-### Convert gender and ethnicity to categorical variable
-df = pd.get_dummies(df, columns = ['gender', 'ethnicity'])
-
-## Convert column
-def binary_decision(dec):
-    if dec == 'A': return 1
-    else: return 0
-
-def ternary_decision(dec):
-    if dec == 'A': return 1
-    elif dec == 'A': return 2
-    else: return 3
-
-df['decision'] = df['decision'].apply(binary_decision)
-
-# label = 'decision'
-# numerical_feats = ['act', 'gpa', 'sat'] 
-# categorical_feats = ['ethnicity', 'gender', 'state', 'schooltype'] 
-# binary_feats = [] # to add: AP's, awards, 
-
-# results = pd.DataFrame(index = [], columns = [])
 cols_to_use = ['gpa', 'act', 'sat1', 'ap_count', 'ap_mean', 'sat2_count', 'sat2_mean']
+label_column = 'decision'
 
-features = df[cols_to_use].as_matrix()
-labels = df['decision'].as_matrix()
-
-
+features, labels = convert_to_features(df.copy(deep = True), cols_to_use, label_column)
 
 
 ####  RUN MODELS #### NEEDS features and labels
@@ -140,7 +76,7 @@ for model_func in ml.model_list:
         # result = pd.DataFrame.from_dict(curr_model_details)
         results = results.append(curr_model_details, ignore_index=True)
 
-results.to_csv('log.csv')
+results.to_csv('log.csv', index = False)
 
 
 

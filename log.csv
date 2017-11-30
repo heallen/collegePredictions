@@ -1,14 +1,32 @@
-,Unnamed: 0,Unnamed: 0.1,Date,Data Desc,Model Type,Parameters,Num_Inputs,Num_Features,Num_Classes,Acc_Count,Wait_Count,Rej_Count,Class_Bal,Accuracy,Precision,Recall,true_neg,false_neg,false_pos,true_pos,Acc
-0,0.0,0.0,0,0,0,0,0,0,0,0,0.0,0,0,0.0,0.0,0.0,0,0,0,0,
-1,1.0,,November_30_2017_03_18_PM,Harvard 20xx - 20xx,decision_tree,{'max_depth': 3},590,7,2,269,,321,0,0.457627118644,0.487804878049,0.645161290323,7,21,11,20,
-2,2.0,,November_30_2017_03_18_PM,Harvard 20xx - 20xx,boosted_decision_tree,"{'n_estimators': 25, 'base_estimator__max_depth': 10}",590,7,2,269,,321,0,0.474576271186,0.5,0.451612903226,14,14,17,14,
-3,3.0,,November_30_2017_03_18_PM,Harvard 20xx - 20xx,random_forest,"{'max_features': 'log2', 'n_estimators': 5}",590,7,2,269,,321,0,0.423728813559,0.451612903226,0.451612903226,11,17,17,14,
-4,4.0,,November_30_2017_03_18_PM,Harvard 20xx - 20xx,mlp,{'hidden_layer_sizes': 100},590,7,2,269,,321,0,0.525423728814,0.529411764706,0.870967741935,4,24,4,27,
-5,5.0,,November_30_2017_03_18_PM,Harvard 20xx - 20xx,svm,{},590,7,2,269,,321,0,0.576271186441,0.615384615385,0.516129032258,18,10,15,16,
-6,6.0,,November_30_2017_03_18_PM,Harvard 20xx - 20xx,svm_rbf,{},590,7,2,269,,321,0,0.576271186441,0.615384615385,0.516129032258,18,10,15,16,
-7,,,November_30_2017_03_21_PM,Harvard 2016 - 2021,decision_tree,{'max_depth': 2},590,7,2,269,NA,321,0,0.474576271186,0.5,0.58064516129,10,18,13,18,
-8,,,November_30_2017_03_21_PM,Harvard 2016 - 2021,boosted_decision_tree,"{'n_estimators': 25, 'base_estimator__max_depth': 2}",590,7,2,269,NA,321,0,0.440677966102,0.473684210526,0.58064516129,8,20,13,18,
-9,,,November_30_2017_03_21_PM,Harvard 2016 - 2021,random_forest,"{'max_features': 'log2', 'n_estimators': 25}",590,7,2,269,NA,321,0,0.389830508475,0.4,0.322580645161,13,15,21,10,
-10,,,November_30_2017_03_21_PM,Harvard 2016 - 2021,mlp,{'hidden_layer_sizes': 100},590,7,2,269,NA,321,0,0.474576271186,0.0,0.0,28,0,31,0,
-11,,,November_30_2017_03_21_PM,Harvard 2016 - 2021,svm,{},590,7,2,269,NA,321,0,0.576271186441,0.615384615385,0.516129032258,18,10,15,16,
-12,,,November_30_2017_03_21_PM,Harvard 2016 - 2021,svm_rbf,{},590,7,2,269,NA,321,0,0.576271186441,0.615384615385,0.516129032258,18,10,15,16,
+Date,Data Desc,Model Type,Parameters,Num_Inputs,Num_Features,Num_Classes,Acc_Count,Wait_Count,Rej_Count,Class_Bal,Accuracy,Precision,Recall,true_neg,false_neg,false_pos,true_pos
+0,0,0,0,0,0,0,0,0.0,0,0,0.0,0.0,0.0,0,0,0,0
+November_30_2017_03_18_PM,Harvard 20xx - 20xx,decision_tree,{'max_depth': 3},590,7,2,269,,321,0,0.457627119,0.487804878,0.64516129,7,21,11,20
+November_30_2017_03_18_PM,Harvard 20xx - 20xx,boosted_decision_tree,"{'n_estimators': 25, 'base_estimator__max_depth': 10}",590,7,2,269,,321,0,0.474576271,0.5,0.451612903,14,14,17,14
+November_30_2017_03_18_PM,Harvard 20xx - 20xx,random_forest,"{'max_features': 'log2', 'n_estimators': 5}",590,7,2,269,,321,0,0.423728814,0.451612903,0.451612903,11,17,17,14
+November_30_2017_03_18_PM,Harvard 20xx - 20xx,mlp,{'hidden_layer_sizes': 100},590,7,2,269,,321,0,0.525423729,0.529411765,0.870967742,4,24,4,27
+November_30_2017_03_18_PM,Harvard 20xx - 20xx,svm,{},590,7,2,269,,321,0,0.576271186,0.615384615,0.516129032,18,10,15,16
+November_30_2017_03_18_PM,Harvard 20xx - 20xx,svm_rbf,{},590,7,2,269,,321,0,0.576271186,0.615384615,0.516129032,18,10,15,16
+November_30_2017_03_21_PM,Harvard 2016 - 2021,decision_tree,{'max_depth': 2},590,7,2,269,,321,0,0.474576271,0.5,0.580645161,10,18,13,18
+November_30_2017_03_21_PM,Harvard 2016 - 2021,boosted_decision_tree,"{'n_estimators': 25, 'base_estimator__max_depth': 2}",590,7,2,269,,321,0,0.440677966,0.473684211,0.580645161,8,20,13,18
+November_30_2017_03_21_PM,Harvard 2016 - 2021,random_forest,"{'max_features': 'log2', 'n_estimators': 25}",590,7,2,269,,321,0,0.389830508,0.4,0.322580645,13,15,21,10
+November_30_2017_03_21_PM,Harvard 2016 - 2021,mlp,{'hidden_layer_sizes': 100},590,7,2,269,,321,0,0.474576271,0.0,0.0,28,0,31,0
+November_30_2017_03_21_PM,Harvard 2016 - 2021,svm,{},590,7,2,269,,321,0,0.576271186,0.615384615,0.516129032,18,10,15,16
+November_30_2017_03_21_PM,Harvard 2016 - 2021,svm_rbf,{},590,7,2,269,,321,0,0.576271186,0.615384615,0.516129032,18,10,15,16
+November_30_2017_04_37_PM,Harvard 2016 - 2021,decision_tree,{'max_depth': 2},590,7,2,269,,321,0,0.474576271,0.5,0.580645161,10,18,13,18
+November_30_2017_04_37_PM,Harvard 2016 - 2021,boosted_decision_tree,"{'n_estimators': 25, 'base_estimator__max_depth': 2}",590,7,2,269,,321,0,0.440677966,0.473684211,0.580645161,8,20,13,18
+November_30_2017_04_37_PM,Harvard 2016 - 2021,random_forest,"{'max_features': 'log2', 'n_estimators': 100}",590,7,2,269,,321,0,0.423728814,0.444444444,0.387096774,13,15,19,12
+November_30_2017_04_37_PM,Harvard 2016 - 2021,mlp,{'hidden_layer_sizes': 100},590,7,2,269,,321,0,0.474576271,0.0,0.0,28,0,31,0
+November_30_2017_04_37_PM,Harvard 2016 - 2021,svm,{},590,7,2,269,,321,0,0.576271186,0.615384615,0.516129032,18,10,15,16
+November_30_2017_04_37_PM,Harvard 2016 - 2021,svm_rbf,{},590,7,2,269,,321,0,0.576271186,0.615384615,0.516129032,18,10,15,16
+November_30_2017_04_41_PM,Harvard 2016 - 2021,decision_tree,{'max_depth': 2},590,7,2,269,,321,0,0.474576271186,0.5,0.58064516129,10,18,13,18
+November_30_2017_04_41_PM,Harvard 2016 - 2021,boosted_decision_tree,"{'n_estimators': 25, 'base_estimator__max_depth': 2}",590,7,2,269,,321,0,0.440677966102,0.473684210526,0.58064516129,8,20,13,18
+November_30_2017_04_41_PM,Harvard 2016 - 2021,random_forest,"{'max_features': 'log2', 'n_estimators': 50}",590,7,2,269,,321,0,0.457627118644,0.48,0.387096774194,15,13,19,12
+November_30_2017_04_41_PM,Harvard 2016 - 2021,mlp,"{'hidden_layer_sizes': (10, 10, 10, 10, 10)}",590,7,2,269,,321,0,0.474576271186,0.0,0.0,28,0,31,0
+November_30_2017_04_41_PM,Harvard 2016 - 2021,svm,{},590,7,2,269,,321,0,0.576271186441,0.615384615385,0.516129032258,18,10,15,16
+November_30_2017_04_41_PM,Harvard 2016 - 2021,svm_rbf,{},590,7,2,269,,321,0,0.576271186441,0.615384615385,0.516129032258,18,10,15,16
+November_30_2017_04_41_PM,Harvard 2016 - 2021,decision_tree,{'max_depth': 2},590,7,2,269,NA,321,0,0.474576271186,0.5,0.58064516129,10,18,13,18
+November_30_2017_04_41_PM,Harvard 2016 - 2021,boosted_decision_tree,"{'n_estimators': 25, 'base_estimator__max_depth': 2}",590,7,2,269,NA,321,0,0.440677966102,0.473684210526,0.58064516129,8,20,13,18
+November_30_2017_04_41_PM,Harvard 2016 - 2021,random_forest,"{'max_features': 'sqrt', 'n_estimators': 50}",590,7,2,269,NA,321,0,0.440677966102,0.464285714286,0.41935483871,13,15,18,13
+November_30_2017_04_41_PM,Harvard 2016 - 2021,mlp,{'hidden_layer_sizes': 100},590,7,2,269,NA,321,0,0.474576271186,0.0,0.0,28,0,31,0
+November_30_2017_04_41_PM,Harvard 2016 - 2021,svm,{},590,7,2,269,NA,321,0,0.576271186441,0.615384615385,0.516129032258,18,10,15,16
+November_30_2017_04_41_PM,Harvard 2016 - 2021,svm_rbf,{},590,7,2,269,NA,321,0,0.576271186441,0.615384615385,0.516129032258,18,10,15,16
