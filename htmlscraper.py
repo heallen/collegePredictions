@@ -1,5 +1,6 @@
 import urllib2
 import re
+import os
 from bs4 import BeautifulSoup
 import json
 
@@ -256,14 +257,15 @@ def parseProfile(message):
 def main():
 
 	profiles = []
-	with open('baseurls.txt') as f:
-		contents = f.readlines()
-	urls = [x.strip() for x in contents] 
+	contents = []
+	for filename in os.listdir("urls"):
+		with open(os.path.join("urls", filename)) as f:
+			contents = contents + f.readlines()
+	urls = [x.strip() for x in contents if 'http' in x] 
 
 	for originalurl in urls:
 		pageNum = 1
 		messages = getMessages(originalurl, pageNum)
-
 		# loop until page has no message posts (page out of range)
 		while messages:
 			for message in messages:
@@ -273,16 +275,18 @@ def main():
 					profiles.append(profile)
 
 			pageNum += 1
+			if pageNum > 20:
+				break
 			messages = getMessages(originalurl, pageNum)
 
 	# number of profiles scraped
 	print len(profiles)
 	
 	# use if just need valid JSON, save space
-	# output = json.dumps(profiles)
+	output = json.dumps(profiles)
 
 	# prettifies JSON
-	output = json.dumps(profiles, indent=4, sort_keys=True)
+	# output = json.dumps(profiles, indent=4, sort_keys=True)
 
 	f = open('profiles.json', 'w')
 	f.write(output)
