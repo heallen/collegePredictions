@@ -257,30 +257,30 @@ def parseProfile(message):
 def main():
 
 	profiles = []
-	contents = []
 	for filename in os.listdir("urls"):
 		with open(os.path.join("urls", filename)) as f:
-			contents = contents + f.readlines()
-	urls = [x.strip() for x in contents if 'http' in x] 
+			contents = f.readlines()
+			urls = [x.strip() for x in contents if 'http' in x] 
 
-	for originalurl in urls:
-		pageNum = 1
-		messages = getMessages(originalurl, pageNum)
-		# loop until page has no message posts (page out of range)
-		while messages:
-			for message in messages:
-				profile = parseProfile(message)
-				# don't include if post isn't a result post (e.g. just a general comment post)
-				if(profile):
-					profiles.append(profile)
+			for originalurl in urls:
+				pageNum = 1
+				messages = getMessages(originalurl, pageNum)
+				# loop until page has no message posts (page out of range)
+				while messages:
+					for message in messages:
+						profile = parseProfile(message)
+						# don't include if post isn't a result post (e.g. just a general comment post)
+						if(profile):
+							profile['school'] = filename[:-8]
+							profiles.append(profile)
 
-			pageNum += 1
-			if pageNum > 20:
-				break
-			messages = getMessages(originalurl, pageNum)
+					pageNum += 1
+					if pageNum > 20:
+						break
+					messages = getMessages(originalurl, pageNum)
 
-	# number of profiles scraped
-	print len(profiles)
+			# number of profiles scraped
+			print len(profiles)
 	
 	# use if just need valid JSON, save space
 	output = json.dumps(profiles)
