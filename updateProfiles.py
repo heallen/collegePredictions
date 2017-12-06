@@ -239,8 +239,51 @@ def standardizeDecision(dec):
 			return 'D'
 	return None
 
-#awards
-#nmf - national merit finalist
+def updateKeywords(row):
+	if row['hooks'] and type(row['hooks']) != float:
+		hooks = row['hooks'].lower()
+ 		if 'urm' in hooks:
+ 			row['urm'] = True
+ 		if 'first generation' in hooks:
+ 			row['first_generation'] = True
+
+ 	if row['extracurriculars'] and type(row['extracurriculars']) != float:
+		leadership = row['extracurriculars'].lower()
+		editor = {'editor in chief', 'editor-in-chief'}
+		if any(word in leadership for word in editor):
+			row['editor-in-chief'] = True 
+		if 'founder' in leadership:
+ 			row['founder'] = True
+ 		if 'president' in leadership:
+ 			row['president'] = True
+ 		if 'captain' in leadership:
+ 			row['captain'] = True
+ 	
+ 	if row['awards'] and type(row['awards']) != float:
+		awards = row['awards'].lower()
+		siemens = {'siemens competition semifinalist', 'siemens competition finalist'}
+		presidential = {'presidential scholar', 'presidential scholars'}
+		national_merit = {'national merit', 'nm', 'nmf'}
+		if any(word in awards for word in siemens):
+			row['siemens'] = True 
+		if 'intel' in awards:
+ 			row['intel'] = True
+		if any(word in awards for word in presidential):
+			row['presidential_scholar'] = True 
+		if any(word in awards for word in national_merit):
+			row['national_merit'] = True
+		if 'ap scholar' in awards:
+ 			row['ap_scholar'] = True
+ 		if 'aime' in awards:
+ 			row['aime'] = True
+ 		if 'imo' in awards:
+ 			row['imo'] = True
+ 		if 'national achievement' in awards:
+ 			row['national_achievement'] = True
+ 		if 'olympiad' in awards:
+ 			row['olymdpiad'] = True
+
+	return row
 
 def main():
 	data = readJson('profiles.json')
@@ -264,9 +307,16 @@ def main():
 	data['decision'] = data['decision'].map(standardizeDecision)
 	data['state'] = data['state'].apply(lambda x: standardizeState(x, states))
 	data = data.apply(updateCountryByState, axis=1)
+	# binary
 	data['country'] = data['country'].apply(lambda x: standardizeCountry(x, states))
 
-	categories = ['act', 'gpa', 'ap', 'ib', 'sat1', 'sat2', 'income', 'rank', 'gender', 'ethnicity', 'decision', 'state', 'country']
+	# KEYWORDS - BINARY
+	data = data.apply(updateKeywords, axis=1)
+
+	categories = ['act', 'gpa', 'ap', 'ib', 'sat1', 'sat2', 'income', 'rank', 'gender', 'ethnicity', \
+	'decision', 'state', 'country', 'urm', 'first_generation', 'editor-in-chief', 'founder', 'president', \
+	'captain', 'siemens', 'intel', 'presidential_scholar', 'national_merit', 'ap_scholar', 'aime', 'imo', \
+	'national_achievement', 'olympaid']
 	updated_data = data.filter(categories, axis=1)
 	updated_data.to_csv('updatedProfiles.csv')
 	updated_data.to_pickle('updatedProfiles.pkl')
