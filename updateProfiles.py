@@ -1,8 +1,8 @@
 import pandas as pd
 import re
 
-def readJson():
-	jsonFile = 'profiles.json'
+def readJson(fileName):
+	jsonFile = fileName
 	data = pd.read_json(jsonFile)
 	return data
 
@@ -47,7 +47,6 @@ def quantifyGPA(gpa):
 			elif float(num[0]) > 60:
 				grade = float(num[0])/20 - 1
 				return grade
-			return num
 	return 0
 
 # DONE - if 2400 is chill
@@ -80,23 +79,50 @@ def quantifySAT2(sat2):
 def quantifyIncome(inc):
 	if inc and type(inc) != float:
 		num = re.findall("\d+[,,k]\d*", inc)
-		if len(num) == 1:
-			if 'k' in num[0]:
-				n = re.findall("\d+", num[0])
-				return int(n[0]) * 1000
-			elif ',' in num[0]:
-				n = num[0].replace(',','')
-				return int(n)
-		if len(num) == 2:
-			if 'k' in num[0] or 'k' in num[1]:
-				n1 = int(re.findall("\d+", num[0])[0]) * 1000
-				n2 = int(re.findall("\d+", num[1])[0]) * 1000
-			elif ',' in num[0] or ',' in num[1]:
-				n1 = int(num[0].replace(',',''))
-				n2 = int(num[1].replace(',',''))
-			average = (n1 + n2)/ 2
-			return average
-	return 0
+		if num:
+			income = 0
+			if len(num) == 1:
+				if 'k' in num[0]:
+					n = re.findall("\d+", num[0])
+					income =  int(n[0]) * 1000
+				elif ',' in num[0]:
+					n = num[0].replace(',','')
+					income = int(n)
+			elif len(num) == 2:
+				if 'k' in num[0] or 'k' in num[1]:
+					n1 = int(re.findall("\d+", num[0])[0]) * 1000
+					n2 = int(re.findall("\d+", num[1])[0]) * 1000
+				elif ',' in num[0] or ',' in num[1]:
+					n1 = int(num[0].replace(',',''))
+					n2 = int(num[1].replace(',',''))
+				income = (n1 + n2)/ 2
+			if income < 50000:
+				return 'lower'
+			elif income < 100000:
+				return 'lower-middle'
+			elif income < 200000:
+				return 'middle'
+			elif income < 400000:
+				return 'upper-middle'
+			elif income >= 400000:
+				return 'upper'
+		else:
+			lower = {'lower', 'lowest'}
+			lower_middle = {'lower-middle', 'lower middle'}
+			middle = {'middle'}
+			upper_middle= {'upper-middle', 'upper middle'}
+			upper = {'high', 'highest', 'upper'}
+			if any(word in inc.lower() for word in lower_middle):
+				return 'lower-middle'
+			elif any(word in inc.lower() for word in upper_middle):
+				return 'upper-middle'
+			elif any(word in inc.lower() for word in middle):
+				return 'middle'
+			elif any(word in inc.lower() for word in lower):
+				return 'lower'
+			elif any(word in inc.lower() for word in upper):
+				return 'upper'
+	return 'N/A'
 
 # DONE
 #floats
@@ -110,7 +136,6 @@ def quantifyRank(rank):
 				return 1 - p
 			else:
 				return p
-
 		elif fraction:
 			f = float(fraction[0].split('/')[0])/int(fraction[0].split('/')[1])
 			return f
@@ -121,7 +146,7 @@ def standardizeEthnicity(eth):
 	if eth and type(eth) != float:
 		#how to handle 'mixed' with listed ethnicities
 		white = {'white', 'caucasian', 'w', 'croatian'}
-		hispanic = {'hispanic', 'puerto rican', 'mexican'}
+		hispanic = {'hispanic', 'puerto rican', 'mexican', 'latino'}
 		african = {'black', 'nigerian', 'african'}
 		asian = {'chinese', 'asian', 'thai', 'vietnamese', 'korean', 'filipino',  'nepali'}
 		indian = {'indian'}
@@ -142,28 +167,55 @@ def standardizeEthnicity(eth):
 			return 'indian'
 	return None
 
-#NEED TO EDIT
-def standardizeCountry(country):
-	if country and type(country) != float:
-		us = {'us', 'usa', 'united states', 'america'}
-		uk = {'england', 'britain', 'uk'}
-		countries = {'us', 'uk', 'canada', 'chile', 'netherlands'}
-		if any(word in country.lower() for word in countries):
-			return 'country'
+#DONE
+def standardizeState(state, states):
+	if state and type(state) != float:
+		states_abbrev = states['abbreviation']
+		states_full = states['name']
+		if any(len(s) == 2 for s in state.split()):
+			for s in state.split():
+				if len(s) == 2:
+					state = s
+			for word in states_abbrev:
+				if word in state.lower():
+					return word
+		for word in states_full:
+			if word in state.lower():
+				abbrev = states.loc[(states['name'] == word), ['abbreviation']]
+				return abbrev.values[0][0]
 	return None
 
-#NEED TO EDIT
-def standardizeState(state):
-	if state and type(state) != float:
-		#map abbreviations to names in another file and return abrev.
-		return state
+#update country to US if state found
+def updateCountryByState(row):
+	if row['state'] != None:
+		row['country'] = 'US'
+	return row
+
+#DONE
+def standardizeCountry(country, states):
+	if country and type(country) != float:
+		states_abbrev = states['abbreviation']
+		states_full = states['name']
+		us = {'us', 'usa', 'united states', 'america', 'u.s.a', 'u.s.', 'u!s!a!', 'u.s.a.'}
+		# uk = {'england', 'britain', 'uk'}
+		# countries = {'us', 'uk', 'canada', 'chile', 'netherlands'}
+		if any(word in country.lower() for word in us) or \
+		   any(word in country.lower() for word in states_abbrev) or \
+		   any(word in country.lower() for word in states_full):
+			return 'US'
+		else:
+			if 'n/a' in country.lower():
+				return None
+			else:
+				return 'international'
 	return None
+
 
 #DONE
 def standardizeGender(gen):
 	if gen and type(gen) != float:
 		female = {'female', 'f'}
-		male = {'male', 'm', 'bro', 'masculine', 'XY'}
+		male = {'male', 'm', 'bro', 'masculine', 'XY', 'man'}
 		if any(word in gen.lower() for word in female):
 			return 'F'
 		elif any(word in gen.lower() for word in male):
@@ -187,9 +239,12 @@ def standardizeDecision(dec):
 			return 'D'
 	return None
 
+#awards
+#nmf - national merit finalist
 
 def main():
-	data = readJson()
+	data = readJson('profiles.json')
+	states = readJson('states.json')
 
 	# QUANTITIES
 	data['act'] = data['act'].map(quantifyACT)
@@ -200,26 +255,18 @@ def main():
 	data['sat2'] = data['sat2'].map(quantifySAT2)
 	data['income'] = data['income'].map(quantifyIncome)
 	data['rank'] = data['rank'].map(quantifyRank)
-
+	
 	# BINARY
 	data['gender'] = data['gender'].map(standardizeGender)
 
 	# SET OF LABELS
 	data['ethnicity'] = data['ethnicity'].map(standardizeEthnicity)
 	data['decision'] = data['decision'].map(standardizeDecision)
+	data['state'] = data['state'].apply(lambda x: standardizeState(x, states))
+	data = data.apply(updateCountryByState, axis=1)
+	data['country'] = data['country'].apply(lambda x: standardizeCountry(x, states))
 
-	#need to make json map of all posibilities (find online)
-	# data['country'] = data['country'].map(standardizeCountry)
-	# data['state'] = data['state'].map(standardizeState)
-
-
-	# to edit states.json to all lowercase - not needed for more than one run
-	# jsonFile = 'states.json'
-	# states = pd.read_json(jsonFile)
-	# states = states.apply(lambda x: x.astype(str).str.lower())
-	# states.to_json(jsonFile)
-
-	categories = ['act', 'gpa', 'ap', 'ib', 'sat1', 'sat2', 'income', 'rank', 'gender', 'ethnicity', 'decision']
+	categories = ['act', 'gpa', 'ap', 'ib', 'sat1', 'sat2', 'income', 'rank', 'gender', 'ethnicity', 'decision', 'state', 'country']
 	updated_data = data.filter(categories, axis=1)
 	updated_data.to_csv('updatedProfiles.csv')
 	updated_data.to_pickle('updatedProfiles.pkl')
