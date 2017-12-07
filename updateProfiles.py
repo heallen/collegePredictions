@@ -301,7 +301,7 @@ def main():
 	
 	# BINARY
 	data['gender'] = data['gender'].map(standardizeGender)
-
+	
 	# SET OF LABELS
 	data['ethnicity'] = data['ethnicity'].map(standardizeEthnicity)
 	data['decision'] = data['decision'].map(standardizeDecision)
@@ -316,7 +316,7 @@ def main():
 	categories = ['act', 'gpa', 'ap', 'ib', 'sat1', 'sat2', 'income', 'rank', 'gender', 'ethnicity', \
 	'decision', 'state', 'country', 'urm', 'first_generation', 'editor-in-chief', 'founder', 'president', \
 	'captain', 'siemens', 'intel', 'presidential_scholar', 'national_merit', 'ap_scholar', 'aime', 'imo', \
-	'national_achievement', 'olympaid']
+	'national_achievement', 'olympaid', 'school']
 	updated_data = data.filter(categories, axis=1)
 	updated_data.to_csv('updatedProfiles.csv')
 	updated_data.to_pickle('updatedProfiles.pkl')
