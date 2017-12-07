@@ -2,11 +2,9 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import AdaBoostRegressor
 from sklearn.svm import SVC
-from sklearn.linear_model import SGDClassifier
-from sklearn.linear_model import Perceptron
+from sklearn.linear_model import Perceptron, SGDClassifier, LogisticRegression
 from sklearn.preprocessing import PolynomialFeatures
-from sklearn.feature_selection import SelectKBest
-from sklearn.feature_selection import mutual_info_classif
+from sklearn.feature_selection import SelectKBest, mutual_info_classif
 from sklearn.neural_network import MLPClassifier
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.metrics import accuracy_score
@@ -20,24 +18,36 @@ from sklearn.svm import SVC
 
 def decision_tree():
     clf = DecisionTreeClassifier()
-    params = {'max_depth':[2, 3,5,10,None]}
+    params = {'max_depth':[2, 3,5,10,None], 'max_features':['sqrt', 'log2', None], 'criterion': ['gini','entropy']}
     return clf, params
 
 def boosted_decision_tree():
     clf = AdaBoostClassifier(DecisionTreeClassifier(min_samples_split=2,
                                                     random_state = None), 
-                             algorithm="SAMME",
-                             learning_rate = 2,
-                             random_state = None)
-    params = {'n_estimators':[25, 50],
+                             algorithm="SAMME")
+    params = {'n_estimators':[25, 50, 100],
               'base_estimator__max_depth':[2, 3, 5, 10, None]}
     return clf, params
 
 def random_forest():
     clf = RandomForestClassifier()
-    params = {'n_estimators':[5,25,50, 100], 'max_features':['sqrt', 'log2']}
+    params = {'max_depth':[1,5,10,25, None],
+              'n_estimators':[5,25,50, 100], 
+              'max_features':['sqrt', 'log2', None], 
+              'criterion': ['gini','entropy']}
     return clf, params
 
+def logreg():
+    clf = LogisticRegression() 
+    params = {'dual':[True, False], 'C':[.01, .1, 1, 2, 5]}
+    # params = {}
+    return clf, 
+
+def perceptron():
+    clf = Perceptron() 
+    params = {'penalty':[None, 'l2','l1','elasticnet']}
+    # params = {}
+    return clf, params
 
 def mlp():
     clf = MLPClassifier() 
@@ -45,15 +55,21 @@ def mlp():
     # params = {}
     return clf, params
 
-def svm():
-    clf = SVC()
-    params = {}
-    return clf, params
 
 def svm_rbf():
     clf = SVC(kernel='rbf')
     params = {}
     return clf, params
 
-model_list = [decision_tree, boosted_decision_tree, random_forest, mlp, svm, svm_rbf]
+def svm_linear():
+    clf = SVC(kernel='linear')
+    params = {}
+    return clf, params
+
+def svm_poly():
+    clf = SVC(kernel='poly')
+    params = {}
+    return clf, params
+
+model_list = [decision_tree, boosted_decision_tree, random_forest, mlp, svm_rbf]
 

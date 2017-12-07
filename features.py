@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import pdb
 
 ### AP replace list of scores with number of tests and average test
 def ap_features(ap_score):
@@ -23,12 +24,13 @@ def ternary_decision(dec):
     elif dec == 'A': return 2
     else: return 3
 
-def convert_to_features(df, columns_to_use, label_column):
+
+def convert_to_features(df):
     df = df.copy(deep = True)
     ### get rid of columns without a decision
     df = df.dropna(subset=['decision'])
 
-    ### Replace Errors and Zeros of  ACT/GPA with mean ACT/GPA
+    ### Replace Errors and Zeros of ACT/GPA/sat1/Rank with mean ACT/GPA/sat1/Rank
     df['act'] = pd.to_numeric(df['act'], downcast = 'integer', errors = 'coerce')
     df['gpa'] = pd.to_numeric(df['gpa'], errors = 'coerce')
     df['sat1'] = pd.to_numeric(df['sat1'], downcast = 'integer', errors = 'coerce')
@@ -36,14 +38,18 @@ def convert_to_features(df, columns_to_use, label_column):
     df['act']= df['act'].where(df['act']!=0, np.nan) 
     df['gpa']= df['gpa'].where(df['gpa']!=0, np.nan) 
     df['sat1']= df['sat1'].where(df['sat1']!=0, np.nan) 
+    df['rank']= df['rank'].where(df['sat1']!=0, np.nan) 
+
 
     mean_act = df['act'].mean(skipna=True)
     mean_gpa = df['gpa'].mean(skipna=True)
     mean_sat = df['sat1'].mean(skipna=True)
+    mean_rank = df['rank'].mean(skipna=True) 
 
     df['act']=df['act'].fillna(value = mean_act)
     df['gpa']=df['gpa'].fillna(value = mean_gpa)
     df['sat1']=df['sat1'].fillna(value = mean_sat)
+    df['rank']=df['rank'].fillna(value = mean_rank)
 
 
 
@@ -56,14 +62,35 @@ def convert_to_features(df, columns_to_use, label_column):
     mean_sat2_score = df['sat2_mean'].mean(skipna=True)
     df['sat2_mean']=df['sat2_mean'].fillna(value = mean_sat2_score)
 
+
+
     ### Convert gender and ethnicity to categorical variable
-    df = pd.get_dummies(df, columns = ['gender', 'ethnicity'])
+    df['state']= df['state'].fillna(value = 'international')
+    df['country']= df['country'].fillna(value = 'country')
+    df = pd.get_dummies(df, columns = ['gender', 'ethnicity', 'state', 'country'])
+
+    ## Location Data
+
+    # pdb.set_trace()
+
+    ### Leadership 
+    # Set NA to zero
+    df[['urm','first_generation','editor-in-chief','founder', 'president','captain',
+        'siemens','intel', 'presidential_scholar', 'national_merit', 'ap_scholar', 
+        'aime','imo', 'national_achievement']] = df[['urm','first_generation',
+        'editor-in-chief','founder', 'president','captain',
+        'siemens','intel', 'presidential_scholar', 'national_merit', 'ap_scholar', 
+        'aime','imo', 'national_achievement']].fillna(value = 0).astype(int)
+
+    df['ec_count']= df[['editor-in-chief','founder', 'president','captain',
+        'siemens','intel', 'presidential_scholar', 'national_merit', 'ap_scholar', 
+        'aime','imo', 'national_achievement']].apply(np.sum, axis = 1)
+        # df['first_generation'] = df['first_generation'].fillna(value = 0)
 
     df['decision'] = df['decision'].apply(binary_decision)
 
-    features = df[columns_to_use].as_matrix()
-    labels = df[label_column].as_matrix()
-    return features, labels
+
+    return df
 
 
 
