@@ -186,10 +186,14 @@ def standardizeState(state, states):
 	return None
 
 #update country to US if state found
-def updateCountryByState(row):
+def updateCountryAndUrm(row):
 	if row['state'] != None:
 		row['country'] = 'US'
+	if row['ethnicity'] == 'urm' or row['ethnicity'] == 'hispanic' \
+	or row['ethnicity'] == 'african' :
+		row['urm'] = True
 	return row
+
 
 #DONE
 def standardizeCountry(country, states):
@@ -306,12 +310,13 @@ def main():
 	data['ethnicity'] = data['ethnicity'].map(standardizeEthnicity)
 	data['decision'] = data['decision'].map(standardizeDecision)
 	data['state'] = data['state'].apply(lambda x: standardizeState(x, states))
-	data = data.apply(updateCountryByState, axis=1)
 	# binary
 	data['country'] = data['country'].apply(lambda x: standardizeCountry(x, states))
 
 	# KEYWORDS - BINARY
 	data = data.apply(updateKeywords, axis=1)
+	data = data.apply(updateCountryAndUrm, axis=1)
+
 
 	categories = ['act', 'gpa', 'ap', 'ib', 'sat1', 'sat2', 'income', 'rank', 'gender', 'ethnicity', \
 	'decision', 'state', 'country', 'urm', 'first_generation', 'editor-in-chief', 'founder', 'president', \
