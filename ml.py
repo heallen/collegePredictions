@@ -11,30 +11,39 @@ from sklearn.metrics import confusion_matrix, precision_recall_fscore_support
 
 from features import convert_to_features
 
-data_desc = 'Ivys 2016 - 2021'
+data_desc = 'Penn 2016 - 2021'
 date = "{:%B_%d_%Y_%I_%M_%p}".format(datetime.now(timezone('US/Eastern')))
 
 # df = pd.read_csv('updateProfiles.csv')
 with open('updatedProfiles.pkl', 'rb') as fobj:
     df = pickle.load(fobj)
 
+cols= ['school', 'gpa',
+       'act', 'sat1', 
+       'test_score','test_type',
+       'ap_count', 'ap_mean', 
+       'sat2_count', 'sat2_mean', 
+       'country', #'rank', #'state', 
+       'gender', 'ethnicity', 'urm', 'first_generation',
+       'ec_count',
+       'decision']
+# cols_to_use = None
 
-# cols_to_use = ['gpa', 'act', 'sat1', 'ap_count', 'ap_mean', 'sat2_count', 'sat2_mean']
-cols_to_use = None
-label_column = 'decision'
+df2, num_features = convert_to_features(df, cols)
 
-df2 = convert_to_features(df)
-
+df2.head(100).to_csv('feats.csv')
 df2.to_pickle('featuresDF.pkl')
 
-if cols_to_use is None:
-    df3 = df2.drop(columns=[label_column, 'ap', 'ib', 'sat2', 'income'])
-else:
-	df3 = df2[cols_to_use]
+# pdb.set_trace()
 
+df_penn = df2.loc[df2.school_penn == 1]
+df_penn.to_csv('penn_feats.csv')
 
-features = df3.as_matrix()
-labels = df2[label_column].as_matrix()
+df2use = df_penn
+
+label_col = 'decision'
+features = df2use.drop(labels = label_col, axis = 1).as_matrix()
+labels = df2use[label_col].as_matrix()
 
 pdb.set_trace()
 
@@ -72,7 +81,7 @@ for model_func in ml.model_list:
                         'Model Type': model_func.__name__, 
                         'Parameters': str(grid_search_clf.best_params_),
                         'Num_Inputs': n,
-                        'Num_Features': d,
+                        'Num_Features': str(num_features),
                         'Num_Classes': num_classes,
                         'Acc_Count': acc_count,
                         'Wait_Count': wait_count,
