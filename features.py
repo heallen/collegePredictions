@@ -80,7 +80,6 @@ def convert_to_features(df, cols):
 
 
     df[['sat2_count', 'sat2_mean']] = df['sat2'].apply(sat2_features)
-    pdb.set_trace()
     mean_sat2_score = df['sat2_mean'].mean(skipna=True)
     df['sat2_mean']=df['sat2_mean'].fillna(value = mean_sat2_score)
     print(mean_sat2_score)

@@ -8,10 +8,11 @@ import pickle
 import pdb
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import confusion_matrix, precision_recall_fscore_support
+from sklearn.preprocessing import StandardScaler
 
 from features import convert_to_features
 
-data_desc = 'Penn 2016 - 2021'
+data_desc = 'Ivies+ 2016 - 2021'
 date = "{:%B_%d_%Y_%I_%M_%p}".format(datetime.now(timezone('US/Eastern')))
 
 # df = pd.read_csv('updateProfiles.csv')
@@ -39,21 +40,25 @@ df2.to_pickle('featuresDF.pkl')
 df_penn = df2.loc[df2.school_penn == 1]
 df_penn.to_csv('penn_feats.csv')
 
-df2use = df_penn
+df2use = df2
 
 label_col = 'decision'
 features = df2use.drop(labels = label_col, axis = 1).as_matrix()
 labels = df2use[label_col].as_matrix()
 
+
+scaler = StandardScaler()
+features2 = np.copy(features)
+features2[:, :num_features[0]] = scaler.fit_transform(features2[:, :num_features[0]])
 pdb.set_trace()
 
-
+features2use = features2
 ####  RUN MODELS #### NEEDS features and labels
 
-n, d = features.shape
+n, d = features2use.shape
 # splits data into train and test
 X_train, X_test, y_train, y_test = train_test_split(
-                                    features, labels, test_size=0.1, random_state=1)
+                                    features2use, labels, test_size=0.1, random_state=1)
 acc_count = np.sum(labels)
 wait_count = 'NA'
 rej_count = float(labels.shape[0] - acc_count)

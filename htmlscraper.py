@@ -283,10 +283,10 @@ def main():
 			print len(profiles)
 	
 	# use if just need valid JSON, save space
-	output = json.dumps(profiles)
+	# output = json.dumps(profiles)
 
 	# prettifies JSON
-	# output = json.dumps(profiles, indent=4, sort_keys=True)
+	output = json.dumps(profiles, indent=4, sort_keys=True)
 
 	f = open('profiles.json', 'w')
 	f.write(output)
