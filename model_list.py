@@ -31,8 +31,8 @@ def boosted_decision_tree():
 
 def random_forest():
     clf = RandomForestClassifier()
-    params = {'max_depth':[1,5,10,15, 20, 25, 30, 50, None],
-              'n_estimators':[5,25,50, 75, 100, 150, 200, 250, 300], #300, 500, 1000
+    params = {'max_depth':[1,5,10,15, 20, 25, None],
+              'n_estimators':[5,25,50, 100, 150, 200, 250, 300], #300, 500, 1000
               'max_features':['sqrt','log2', None], # , 
               'criterion': ['gini','entropy'],
               'bootstrap': [True, False]}
@@ -73,5 +73,6 @@ def svm_poly():
     params = {}
     return clf, params
 
-model_list = [decision_tree, boosted_decision_tree, random_forest, logreg, perceptron, svm_rbf, svm_linear]
+# model_list = [decision_tree, boosted_decision_tree, random_forest, logreg, perceptron, svm_rbf, svm_linear]
 
+model_list = [decision_tree, random_forest, svm_rbf]

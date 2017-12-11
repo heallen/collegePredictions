@@ -7,8 +7,9 @@ import model_list as ml
 import pickle
 import pdb
 from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.metrics import confusion_matrix, precision_recall_fscore_support
+from sklearn.metrics import confusion_matrix, precision_recall_fscore_support, log_loss
 from sklearn.preprocessing import StandardScaler
+
 
 from features import convert_to_features
 
@@ -52,7 +53,7 @@ features2 = np.copy(features)
 features2[:, :num_features[0]] = scaler.fit_transform(features2[:, :num_features[0]])
 pdb.set_trace()
 
-features2use = features2
+features2use = features
 ####  RUN MODELS #### NEEDS features and labels
 
 n, d = features2use.shape
@@ -79,7 +80,8 @@ for model_func in ml.model_list:
     accuracy = np.mean(y_test == y_predict)
     cnf_matrix = confusion_matrix(y_test, y_predict)
     prec, rec, _, _ = precision_recall_fscore_support(y_test, y_predict, average='binary')
-        
+    
+    cross_entropy = log_loss(y_test, model.predict_proba(X_test))
     # saves model performance and details to dictionary
     curr_model_details = {'Date': date, 
                         'Data Desc': data_desc,
@@ -99,7 +101,8 @@ for model_func in ml.model_list:
                         'true_neg': cnf_matrix[0][0],
                         'false_neg': cnf_matrix[0][1],
                         'false_pos': cnf_matrix[1][0],
-                        'true_pos': cnf_matrix[1][1]}
+                        'true_pos': cnf_matrix[1][1],
+                        'cross_entropy': cross_entropy}
     print curr_model_details
     # curr_model_details = {k: [v] for k, v in curr_model_details.items()}
     # result = pd.DataFrame.from_dict(curr_model_details)
