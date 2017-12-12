@@ -28,14 +28,18 @@ def parseProfile(message):
 			endIndex = line.find('</b>', startIndex)
 			if endIndex == -1:
 				endIndex = line.find('<br/>', startIndex)
+			if endIndex == -1:
+				endIndex = len(line) - 1
 			if endIndex != -1:
 				profile['decision'] = line[startIndex: endIndex].strip()
 
-		elif 'SAT I ' in line or 'SATI ' in line or 'SAT I:' in line or 'SATI:' in line:
+		elif 'SAT I ' in line or 'SATI ' in line or 'SAT I:' in line or 'SATI:' in line or 'SAT:' in line:
 			startIndex = line.find(':') + 1
 			endIndex = line.find('</li>', startIndex)
 			if endIndex == -1:
 				endIndex = line.find('<br/>', startIndex)
+			if endIndex == -1:
+				endIndex = len(line) - 1
 			if endIndex != -1:
 				profile['sat1'] = line[startIndex: endIndex].strip()
 
@@ -44,23 +48,29 @@ def parseProfile(message):
 			endIndex = line.find('</li>', startIndex)
 			if endIndex == -1:
 				endIndex = line.find('<br/>', startIndex)
+			if endIndex == -1:
+				endIndex = len(line) - 1
 			if endIndex != -1:
 				profile['act'] = line[startIndex: endIndex].strip()
 
-		elif 'SAT II:' in line or 'SAT II (' in line:
+		elif 'SAT II:' in line or 'SAT II (' in line or 'SAT IIs' in line:
 			startIndex = line.find(':') + 1
 			endIndex = line.find('</li>', startIndex)
 			if endIndex == -1:
 				endIndex = line.find('<br/>', startIndex)
+			if endIndex == -1:
+				endIndex = len(line) - 1
 			if endIndex != -1:
 				profile['sat2'] = line[startIndex: endIndex].strip()
 
-		elif 'Unweighted GPA' in line:
+		elif 'Unweighted GPA' in line or 'GPA:' in line:
 			startIndex = line.find(':') + 1
 			endIndex = line.find('</li>', startIndex)
 			if endIndex == -1:
 				endIndex = line.find('<br/>', startIndex)
-			if endIndex != -1:
+			if endIndex == -1:
+				endIndex = len(line) - 1
+			if endIndex != -1 and not 'gpa' in profile:
 				profile['gpa'] = line[startIndex: endIndex].strip()
 
 		elif 'Rank' in line:
@@ -68,6 +78,8 @@ def parseProfile(message):
 			endIndex = line.find('</li>', startIndex)
 			if endIndex == -1:
 				endIndex = line.find('<br/>', startIndex)
+			if endIndex == -1:
+				endIndex = len(line) - 1
 			if endIndex != -1:
 				profile['rank'] = line[startIndex: endIndex].strip()
 
@@ -76,6 +88,8 @@ def parseProfile(message):
 			endIndex = line.find('</li>', startIndex)
 			if endIndex == -1:
 				endIndex = line.find('<br/>', startIndex)
+			if endIndex == -1:
+				endIndex = len(line) - 1
 			if endIndex != -1:
 				profile['ap'] = line[startIndex: endIndex].strip()
 
@@ -84,6 +98,8 @@ def parseProfile(message):
 			endIndex = line.find('</li>', startIndex)
 			if endIndex == -1:
 				endIndex = line.find('<br/>', startIndex)
+			if endIndex == -1:
+				endIndex = len(line) - 1
 			if endIndex != -1:
 				profile['ib'] = line[startIndex: endIndex].strip()
 
@@ -92,6 +108,8 @@ def parseProfile(message):
 			endIndex = line.find('</li>', startIndex)
 			if endIndex == -1:
 				endIndex = line.find('<br/>', startIndex)
+			if endIndex == -1:
+				endIndex = len(line) - 1
 			if endIndex != -1:
 				profile['courseload'] = line[startIndex: endIndex].strip()
 
@@ -100,6 +118,8 @@ def parseProfile(message):
 			endIndex = line.find('</li>', startIndex)
 			if endIndex == -1:
 				endIndex = line.find('<br/>', startIndex)
+			if endIndex == -1:
+				endIndex = len(line) - 1
 			if endIndex != -1:
 				profile['awards'] = line[startIndex: endIndex].strip()
 
@@ -108,6 +128,8 @@ def parseProfile(message):
 			endIndex = line.find('</li>', startIndex)
 			if endIndex == -1:
 				endIndex = line.find('<br/>', startIndex)
+			if endIndex == -1:
+				endIndex = len(line) - 1
 			if endIndex != -1:
 				profile['extracurriculars'] = line[startIndex: endIndex].strip()
 
@@ -116,6 +138,8 @@ def parseProfile(message):
 			endIndex = line.find('</li>', startIndex)
 			if endIndex == -1:
 				endIndex = line.find('<br/>', startIndex)
+			if endIndex == -1:
+				endIndex = len(line) - 1
 			if endIndex != -1:
 				profile['jobexp'] = line[startIndex: endIndex].strip()
 		
@@ -124,6 +148,8 @@ def parseProfile(message):
 			endIndex = line.find('</li>', startIndex)
 			if endIndex == -1:
 				endIndex = line.find('<br/>', startIndex)
+			if endIndex == -1:
+				endIndex = len(line) - 1
 			if endIndex != -1:
 				profile['volunteer'] = line[startIndex: endIndex].strip()
 
@@ -132,6 +158,8 @@ def parseProfile(message):
 			endIndex = line.find('</li>', startIndex)
 			if endIndex == -1:
 				endIndex = line.find('<br/>', startIndex)
+			if endIndex == -1:
+				endIndex = len(line) - 1
 			if endIndex != -1:
 				profile['summer'] = line[startIndex: endIndex].strip()
 
@@ -140,6 +168,8 @@ def parseProfile(message):
 			endIndex = line.find('</li>', startIndex)
 			if endIndex == -1:
 				endIndex = line.find('<br/>', startIndex)
+			if endIndex == -1:
+				endIndex = len(line) - 1
 			if endIndex != -1:
 				profile['essay'] = line[startIndex: endIndex].strip()
 
@@ -150,6 +180,8 @@ def parseProfile(message):
 			endIndex = line.find('</li>', startIndex)
 			if endIndex == -1:
 				endIndex = line.find('<br/>', startIndex)
+			if endIndex == -1:
+				endIndex = len(line) - 1
 			if endIndex != -1:
 				profile['interview'] = line[startIndex: endIndex].strip()
 
@@ -158,6 +190,8 @@ def parseProfile(message):
 			endIndex = line.find('</li>', startIndex)
 			if endIndex == -1:
 				endIndex = line.find('<br/>', startIndex)
+			if endIndex == -1:
+				endIndex = len(line) - 1
 			if endIndex != -1:
 				profile['state'] = line[startIndex: endIndex].strip()
 
@@ -166,6 +200,8 @@ def parseProfile(message):
 			endIndex = line.find('</li>', startIndex)
 			if endIndex == -1:
 				endIndex = line.find('<br/>', startIndex)
+			if endIndex == -1:
+				endIndex = len(line) - 1
 			if endIndex != -1:
 				profile['country'] = line[startIndex: endIndex].strip()
 
@@ -174,6 +210,8 @@ def parseProfile(message):
 			endIndex = line.find('</li>', startIndex)
 			if endIndex == -1:
 				endIndex = line.find('<br/>', startIndex)
+			if endIndex == -1:
+				endIndex = len(line) - 1
 			if endIndex != -1:
 				profile['schooltype'] = line[startIndex: endIndex].strip()
 
@@ -182,6 +220,8 @@ def parseProfile(message):
 			endIndex = line.find('</li>', startIndex)
 			if endIndex == -1:
 				endIndex = line.find('<br/>', startIndex)
+			if endIndex == -1:
+				endIndex = len(line) - 1
 			if endIndex != -1:
 				profile['ethnicity'] = line[startIndex: endIndex].strip()
 
@@ -190,6 +230,8 @@ def parseProfile(message):
 			endIndex = line.find('</li>', startIndex)
 			if endIndex == -1:
 				endIndex = line.find('<br/>', startIndex)
+			if endIndex == -1:
+				endIndex = len(line) - 1
 			if endIndex != -1:
 				profile['gender'] = line[startIndex: endIndex].strip()
 
@@ -198,6 +240,8 @@ def parseProfile(message):
 			endIndex = line.find('</li>', startIndex)
 			if endIndex == -1:
 				endIndex = line.find('<br/>', startIndex)
+			if endIndex == -1:
+				endIndex = len(line) - 1
 			if endIndex != -1:
 				profile['income'] = line[startIndex: endIndex].strip()
 
@@ -206,6 +250,8 @@ def parseProfile(message):
 			endIndex = line.find('</li>', startIndex)
 			if endIndex == -1:
 				endIndex = line.find('<br/>', startIndex)
+			if endIndex == -1:
+				endIndex = len(line) - 1
 			if endIndex != -1:
 				profile['hooks'] = line[startIndex: endIndex].strip()
 
@@ -214,6 +260,8 @@ def parseProfile(message):
 			endIndex = line.find('</li>', startIndex)
 			if endIndex == -1:
 				endIndex = line.find('<br/>', startIndex)
+			if endIndex == -1:
+				endIndex = len(line) - 1
 			if endIndex != -1:
 				profile['strengths'] = line[startIndex: endIndex].strip()
 
@@ -222,6 +270,8 @@ def parseProfile(message):
 			endIndex = line.find('</li>', startIndex)
 			if endIndex == -1:
 				endIndex = line.find('<br/>', startIndex)
+			if endIndex == -1:
+				endIndex = len(line) - 1
 			if endIndex != -1:
 				profile['weaknesses'] = line[startIndex: endIndex].strip()
 
@@ -230,6 +280,8 @@ def parseProfile(message):
 			endIndex = line.find('</li>', startIndex)
 			if endIndex == -1:
 				endIndex = line.find('<br/>', startIndex)
+			if endIndex == -1:
+				endIndex = len(line) - 1
 			if endIndex != -1:
 				profile['whydecision'] = line[startIndex: endIndex].strip()
 
@@ -238,6 +290,8 @@ def parseProfile(message):
 			endIndex = line.find('</li>', startIndex)
 			if endIndex == -1:
 				endIndex = line.find('<br/>', startIndex)
+			if endIndex == -1:
+				endIndex = len(line) - 1
 			if endIndex != -1:
 				profile['otherschools'] = line[startIndex: endIndex].strip()
 
@@ -248,6 +302,8 @@ def parseProfile(message):
 			endIndex = line.find('</div>', startIndex)
 			if endIndex == -1:
 				endIndex = line.find('<br/>', startIndex)
+			if endIndex == -1:
+				endIndex = len(line) - 1
 			if endIndex != -1:
 				profile['comments'] = line[startIndex: endIndex].strip()
 	return profile
@@ -263,6 +319,7 @@ def main():
 			urls = [x.strip() for x in contents if 'http' in x] 
 
 			for originalurl in urls:
+				print originalurl
 				pageNum = 1
 				messages = getMessages(originalurl, pageNum)
 				# loop until page has no message posts (page out of range)
@@ -270,20 +327,16 @@ def main():
 					for message in messages:
 						profile = parseProfile(message)
 						# don't include if post isn't a result post (e.g. just a general comment post)
-						if(profile):
+						if('decision' in profile):
 							profile['school'] = filename[:-8]
 							profiles.append(profile)
 
 					pageNum += 1
-					if pageNum > 20:
-						break
 					messages = getMessages(originalurl, pageNum)
 
 			# number of profiles scraped
+			print filename
 			print len(profiles)
-	
-	# use if just need valid JSON, save space
-	# output = json.dumps(profiles)
 
 	# prettifies JSON
 	output = json.dumps(profiles, indent=4, sort_keys=True)
