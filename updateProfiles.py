@@ -122,7 +122,7 @@ def quantifyIncome(inc):
 				return 'lower'
 			elif any(word in inc.lower() for word in upper):
 				return 'upper'
-	return 'N/A'
+	return None
 
 # DONE
 #floats
