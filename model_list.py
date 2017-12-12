@@ -31,17 +31,18 @@ def boosted_decision_tree():
 
 def random_forest():
     clf = RandomForestClassifier()
-    params = {'max_depth':[1,5,10,25, None],
-              'n_estimators':[5,25,50, 100], 
-              'max_features':['sqrt', 'log2', None], 
-              'criterion': ['gini','entropy']}
+    params = {'max_depth':[1,5,10,15, 20, 25, None],
+              'n_estimators':[5,25,50, 100, 150, 200, 250, 300], #300, 500, 1000
+              'max_features':['sqrt','log2', None], # , 
+              'criterion': ['gini','entropy'],
+              'bootstrap': [True, False]}
     return clf, params
 
 def logreg():
     clf = LogisticRegression() 
     params = {'dual':[True, False], 'C':[.01, .1, 1, 2, 5]}
     # params = {}
-    return clf, 
+    return clf, params
 
 def perceptron():
     clf = Perceptron() 
@@ -51,7 +52,8 @@ def perceptron():
 
 def mlp():
     clf = MLPClassifier() 
-    params = {'hidden_layer_sizes':[(100), (30,30,30),(30,100,30), (10,10,10,10,10),(100,100,100)]}
+    params = {'hidden_layer_sizes':[(100), (30,30,30),(30,100,30), (10,10,10,10,10),(100,100,100)],
+               'activation': ['tanh', 'relu'], 'max_iter': [200, 500]}
     # params = {}
     return clf, params
 
@@ -71,5 +73,6 @@ def svm_poly():
     params = {}
     return clf, params
 
-model_list = [decision_tree, boosted_decision_tree, random_forest, mlp, svm_rbf]
+# model_list = [decision_tree, boosted_decision_tree, random_forest, logreg, perceptron, svm_rbf, svm_linear]
 
+model_list = [decision_tree, random_forest, svm_rbf]
